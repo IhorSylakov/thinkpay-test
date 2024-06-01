@@ -14,10 +14,10 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "precache-manifest.d1b0d757cfce223bebc891f22ae13c7f.js"
+  "precache-manifest.c3fbd21f24e9d27da76df5530cc1fa02.js"
 );
 
-workbox.core.setCacheNameDetails({prefix: "thinkpay_test"});
+workbox.core.setCacheNameDetails({prefix: "thinkpay-test"});
 
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
