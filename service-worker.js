@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "thinkpay-test/precache-manifest.c522cec7da72ca9fcabf67d13d2afb07.js"
+  "precache-manifest.f39e3e1d9885b5543d47016184cba33d.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "thinkpay-test"});
