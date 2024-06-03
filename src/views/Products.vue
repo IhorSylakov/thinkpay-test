@@ -1,13 +1,34 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="12" sm="6" md="4">
-        <v-text-field v-model="name" type="text" label="Filter by name"></v-text-field>
+      <v-col cols="12" sm="6" md="3">
+        <v-text-field
+          v-model="name"
+          type="search"
+          label="Filter by name"
+          clearable
+        ></v-text-field>
       </v-col>
-      <v-col cols="12" sm="6" md="4">
-        <v-text-field v-model="price" type="text" label="Filter by price"></v-text-field>
+      <v-col cols="12" sm="6" md="3">
+        <v-text-field
+          v-model="code"
+          type="search"
+          label="Filter by code"
+          @input="formatInput"
+          @keypress="validateInput"
+          maxlength="9"
+          clearable
+        ></v-text-field>
       </v-col>
-      <v-col cols="12" sm="6" md="4">
+      <v-col cols="12" sm="6" md="3">
+        <v-text-field
+          v-model="price"
+          type="search"
+          label="Filter by price"
+          clearable
+        ></v-text-field>
+      </v-col>
+      <v-col cols="12" sm="6" md="3">
         <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ on }">
             <v-btn color="primary" dark class="mt-3" block v-on="on">New Item</v-btn>
@@ -34,6 +55,9 @@
                     <v-text-field
                       label="Code"
                       v-model.trim="editedProduct.code"
+                      @input="formatInput"
+                      @keypress="validateInput"
+                      maxlength="9"
                       @blur="$v.editedProduct.code.$touch()"
                       :error="$v.editedProduct.code.$error"
                       :messages="$v.editedProduct.code.$error
@@ -117,17 +141,17 @@ export default {
     dialog: false,
     name: '',
     code: '',
-    price: null,
+    price: '',
     isEdit: '',
     editedProduct: {
       name: '',
       code: '',
-      price: null,
+      price: '',
     },
     defaultProduct: {
       name: '',
       code: '',
-      price: null,
+      price: '',
     },
   }),
   validations() {
@@ -165,26 +189,35 @@ export default {
           value: 'code',
           filter: (value) => {
             if (!this.code) return true;
-            return value === this.code;
+            return value.includes(this.code);
           },
+          width: '100',
         },
         {
           text: 'Price',
           value: 'price',
+          filter: (value) => {
+            if (!this.price) return true;
+            return value === Number(this.price);
+          },
+          width: '80',
         },
         {
           text: 'Created',
           value: 'created_at',
+          width: '170',
         },
         {
           text: 'Updated',
           value: 'updated_at',
+          width: '170',
         },
         {
           text: 'Actions',
           value: 'action',
           sortable: false,
           align: 'right',
+          width: '120',
         },
       ];
     },
@@ -193,6 +226,21 @@ export default {
     await this.$store.dispatch('GET_PRODUCTS');
   },
   methods: {
+    validateInput(event) {
+      const char = String.fromCharCode(event.keyCode);
+      if (!/[0-9-]/.test(char)) {
+        event.preventDefault();
+      }
+    },
+    formatInput() {
+      let formattedValue = this.code.replace(/[^0-9]/g, '');
+
+      if (formattedValue.length > 4) {
+        formattedValue = `${formattedValue.slice(0, 4)}-${formattedValue.slice(4, 8)}`;
+      }
+
+      this.code = formattedValue;
+    },
     showDate(date) {
       const currentDate = new Date(date);
       const day = currentDate.getDate();

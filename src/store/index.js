@@ -5,9 +5,7 @@ import axios from 'axios';
 Vue.use(Vuex);
 
 // const url = 'https://test-app.viktor.ws/api/products/';
-// const url = 'https://fathomless-escarpment-66749.herokuapp.com/products';
 const url = 'https://thinkpay-test-backend-b206f7f709a4.herokuapp.com/products/';
-// const url = 'https://thinkpay-test-backend-1.vercel.app/products/';
 
 export default new Vuex.Store({
   state: {
